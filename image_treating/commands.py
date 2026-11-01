@@ -1,5 +1,4 @@
-"""Execucao de comandos externos atras de uma abstracao (permite testar sem GPU)."""
-
+import subprocess
 from typing import Mapping, Optional, Protocol, Sequence
 
 
@@ -9,17 +8,14 @@ class CommandRunner(Protocol):
         cmd: Sequence[str],
         cwd: Optional[str] = None,
         env: Optional[Mapping[str, str]] = None,
-    ) -> None:
-        ...
+    ) -> None: ...
 
 
 class SubprocessRunner:
-    """Implementacao real: delega para subprocess.run(check=True)."""
-
     def run(
         self,
         cmd: Sequence[str],
         cwd: Optional[str] = None,
         env: Optional[Mapping[str, str]] = None,
     ) -> None:
-        raise NotImplementedError
+        subprocess.run(list(cmd), cwd=cwd, env=env, check=True)
